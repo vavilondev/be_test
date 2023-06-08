@@ -12,3 +12,6 @@ But we can also doing both things in one step. We can save value in our db + sen
 
 So, we can provide additional common for both services id of task. And then we will ignore response from webhook. 
 Or we can update existing task in db and update it with "external_id" 
+
+
+Update: instead of seed, better to use migrations (seed just for dev example)

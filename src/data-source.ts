@@ -1,6 +1,5 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { TodoEntity } from './enities/todo.entity';
-import { TodoDateEntity } from './enities/todoDateGroup.entity';
 
 const {
   POSTGRES_DATABASE,
@@ -13,7 +12,6 @@ const {
 
 export const entities = [
     TodoEntity,
-    TodoDateEntity
 ];
 
 export const options: DataSourceOptions = {

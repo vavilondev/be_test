@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { TodoistDTO } from '../../features/todo/dto/todoist.dto';
-import { TodoDTO } from '../../features/todo/dto/todo.dto';
-import { CreateTodoistInputDTO } from '../../features/todo/dto/todoist.input.dto';
+import { SuccessDto } from 'src/common/dto/success.dto';
+import { CreateTodoistInputDTO, UpdateTodoistInputDTO } from '../../features/todo/dto/todoist.input.dto';
 
 @Injectable()
 export class TodoistService {
@@ -22,8 +21,9 @@ export class TodoistService {
     }
   }
 
-  async createTodoist(input: CreateTodoistInputDTO): Promise<Pick<TodoistDTO, 'id' | 'description' | 'content'| 'created_at'>> {
-    const response = await axios.post('https://api.todoist.com/rest/v2/tasks', {
+  // todo: create type for Promise<any>
+  async createTodoist(input: CreateTodoistInputDTO): Promise<SuccessDto> {
+    await axios.post('https://api.todoist.com/rest/v2/tasks', {
       content: input.title,
       description: input.description,
     }, {
@@ -32,16 +32,22 @@ export class TodoistService {
         Authorization: `Bearer ${process.env.TODOIST_TOKEN}`,
       },
     });
-    console.log(response)
-    const createdTask = response.data;
 
-    const todo = {
-      id: createdTask.id,
-      content: createdTask.content,
-      description: createdTask.description,
-      created_at: createdTask.created_at
-    };
+    return {success: true};
+  }
 
-    return todo;
+  async updateTodoist(id: number, input: UpdateTodoistInputDTO): Promise<SuccessDto> {
+    // could be checked on what is True
+    await axios.put(`https://api.todoist.com/rest/v2/tasks/${id}`, {
+      ...(input.title && {content: input.title}),
+      ...(input.title && {description: input.description}),
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.TODOIST_TOKEN}`,
+      },
+    });
+
+    return {success: true};
   }
 }

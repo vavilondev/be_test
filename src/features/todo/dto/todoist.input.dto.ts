@@ -8,3 +8,12 @@ export class CreateTodoistInputDTO {
   @Field()
   description: string;
 }
+
+@InputType()
+export class UpdateTodoistInputDTO {
+  @Field()
+  title?: string;
+
+  @Field()
+  description?: string;
+}
